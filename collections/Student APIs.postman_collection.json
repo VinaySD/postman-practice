@@ -9,6 +9,91 @@
   "item": [
     {
       "name": "GET Single Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Basic response validations\r",
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is present\", () => {\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie 'language' is present\", () => {\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "\r",
+              "// Test data type of any part of the response\r",
+              "const jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Test data type of the response\", () => {\r",
+              "    pm.expect(jsonData).to.be.an(\"object\");\r",
+              "    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+              "    pm.expect(jsonData.courses).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "// Test array contents in body\r",
+              "pm.test(\"Test array properties\", () => {\r",
+              "    pm.expect(jsonData.courses).to.include(\"Java\");\r",
+              "    pm.expect(jsonData.courses).to.have.members([\"Java\", \"Selenium\"]);\r",
+              "});\r",
+              "\r",
+              "// Validating JSON fields in Response\r",
+              "pm.test(\"values of fields in response\", () => {\r",
+              "    pm.expect(jsonData.id).to.eql(1);\r",
+              "    pm.expect(jsonData.name).to.eql(\"John\");\r",
+              "    pm.expect(jsonData.location).to.eql(\"india\");\r",
+              "    pm.expect(jsonData.phone).to.eql(\"1234567890\");\r",
+              "    pm.expect(jsonData.courses[0]).to.eql(\"Java\");\r",
+              "    pm.expect(jsonData.courses[1]).to.eql(\"Selenium\");\r",
+              "});\r",
+              "\r",
+              "// JSON Schema validation\r",
+              "var schema = {\r",
+              "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "        \"id\": { \"type\": \"integer\" },\r",
+              "        \"name\": { \"type\": \"string\" },\r",
+              "        \"location\": { \"type\": \"string\" },\r",
+              "        \"phone\": { \"type\": \"string\" },\r",
+              "        \"courses\": {\r",
+              "            \"type\": \"array\",\r",
+              "            \"items\": [\r",
+              "                { \"type\": \"string\" },\r",
+              "                { \"type\": \"string\" }\r",
+              "            ]\r",
+              "        }\r",
+              "    },\r",
+              "    \"required\": [\"id\", \"name\", \"location\", \"phone\", \"courses\"]\r",
+              "};\r",
+              "\r",
+              "// Validate schema\r",
+              "pm.test('Schema is valid', function () {\r",
+              "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -29,6 +114,42 @@
     },
     {
       "name": "GET All Student Data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is present\", () => {\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie 'language' is present\", () => {\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie language has value 1\", () => {\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "noauth"
@@ -51,6 +172,42 @@
     },
     {
       "name": "Create New Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", () => {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is present\", () => {\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie 'language' is present\", () => {\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie language has value 1\", () => {\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "noauth"
@@ -82,6 +239,42 @@
     },
     {
       "name": "Update Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is present\", () => {\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie 'language' is present\", () => {\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie language has value 1\", () => {\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "noauth"
@@ -114,6 +307,34 @@
     },
     {
       "name": "Delete Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is present\", () => {\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cookie 'language' is present\", () => {\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "noauth"
