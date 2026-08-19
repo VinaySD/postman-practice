@@ -1,0 +1,3 @@
+Download a file called - file-upload-RestAPI.jar on test-data folder. 
+
+Use command in powershell - java -jar file-upload-RestAPI.jar
