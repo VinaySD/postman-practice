@@ -44,8 +44,8 @@
           }
         },
         "url": {
-          "raw": "POST https://dummyjson.com/users/add",
-          "protocol": "POST https",
+          "raw": "https://dummyjson.com/users/add",
+          "protocol": "https",
           "host": [
             "dummyjson",
             "com"
@@ -109,20 +109,20 @@
         {
           "listen": "test",
           "script": {
-            "exec": [
-              "pm.test(\"Status code is 200\", () => {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.expect(jsonData.isDeleted).to.eql(true);\r",
-              "\r",
-              "pm.environment.unset(\"user_id\");"
-            ],
             "type": "text/javascript",
-            "packages": {},
-            "requests": {}
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test(\"isDeleted is true\", () => {",
+              "    pm.expect(jsonData.isDeleted).to.eql(true);",
+              "});",
+              "",
+              "pm.environment.unset(\"user_id\");"
+            ]
           }
         }
       ],
@@ -179,24 +179,6 @@
           ""
         ]
       }
-    }
-  ],
-  "variable": [
-    {
-      "key": "auth_secret_06qb",
-      "secret": true
-    },
-    {
-      "key": "auth_secret_0u5i",
-      "secret": true
-    },
-    {
-      "key": "auth_secret_0hz3",
-      "secret": true
-    },
-    {
-      "key": "auth_secret_1dwz",
-      "secret": true
     }
   ]
 }
